@@ -1,0 +1,11 @@
+# .gitignore at root Level tool-ai/.gitignore
+
+client/node_modules/
+client/build/
+client/.env
+
+server/node_modules/
+server/.env
+
+*.log
+.DS_Store
