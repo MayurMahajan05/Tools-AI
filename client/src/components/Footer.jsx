@@ -110,22 +110,22 @@ const Footer = () => {
                     </p>
 
                     <div className='flex items-center gap-4 mt-4'>
-                        <a href="https://mayur.dev" target="_blank" rel="noopener noreferrer">
+                        <a href="https://github.com/MayurMahajan05" target="_blank" rel="noopener noreferrer">
                             <Globe className="w-6 h-6 text-gray-500 hover:text-blue-500 transition-colors duration-300 cursor-pointer" />
                         </a>
-                        <a href="https://github.com/mayurdev" target="_blank" rel="noopener noreferrer">
+                        <a href="https://github.com/MayurMahajan05" target="_blank" rel="noopener noreferrer">
                             <Github className="w-6 h-6 text-gray-500 hover:text-black transition-colors duration-300 cursor-pointer" />
                         </a>
-                        <a href="https://x.com/mayur" target="_blank" rel="noopener noreferrer">
+                        <a href="https://www.geeksforgeeks.org/user/mimayurmkv2p/" target="_blank" rel="noopener noreferrer">
                             <X className="w-6 h-6 text-gray-500 hover:text-gray-900 transition-colors duration-300 cursor-pointer" />
                         </a>
-                        <a href="https://linkedin.com/in/mayur" target="_blank" rel="noopener noreferrer">
+                        <a href="https://www.linkedin.com/in/mayur-mahajan-31b1192a9" target="_blank" rel="noopener noreferrer">
                             <Linkedin className="w-6 h-6 text-gray-500 hover:text-blue-700 transition-colors duration-300 cursor-pointer" />
                         </a>
                     </div>
 
                     <div className='mt-3 text-sm'>
-                        Or <a href="mailto:mayur@example.com" className="text-blue-600 hover:underline">email me</a> directly.
+                        Or <a href="mailto:mahajan.mayur.it030@gmail.com" className="text-blue-600 hover:underline">email me</a> directly.
                     </div>
                 </div>
 
@@ -135,7 +135,7 @@ const Footer = () => {
                     <ul className='mt-3 flex flex-col gap-2 text-sm'>
                         <li><a href="#project1">JobHunt Platform</a></li>
                         <li><a href="#project2">HaritKranti (Agri Marketplace)</a></li>
-                        <li><a href="#project3">AI Timetable Generator</a></li>
+                        <li><a href="#project3">Producticity</a></li>
                         <li><a href="#project4">Competitive Coding Tracker</a></li>
                     </ul>
                 </div>
