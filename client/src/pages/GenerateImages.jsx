@@ -1,21 +1,47 @@
 import { Image, Sparkles } from 'lucide-react'
 import React, { useState } from 'react'
+import axios from 'axios'
+import { useAuth } from '@clerk/clerk-react'
+import Markdown from 'react-markdown'
+import { toast } from 'react-hot-toast'
+
+axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 const GenerateImages = () => {
 
-      const imageStyle = [
-        'Realistic' , 'Ghibli Style' , 'Anime style' , 'Cartoon style' , 'Fantasy style' , 'Realistic style' , '3D style' , 'portrait style'
-      ]
-    
-      const [selectedStyle, setSelectedStyle] = useState(imageStyle[0])
-      const [input, setInput] = useState('')
-      const [publish , setPublish] =useState(false) //whether publish the image publicly or not 
-    
-      const onSubmitHandler = async(e)=>{
-    
-      e.preventDefault();
+  const imageStyle = [
+    'Realistic', 'Ghibli Style', 'Anime style', 'Cartoon style', 'Fantasy style', 'Realistic style', '3D style', 'portrait style'
+  ]
+
+  const [selectedStyle, setSelectedStyle] = useState(imageStyle[0])
+  const [input, setInput] = useState('')
+  const [publish, setPublish] = useState(false) //whether publish the image publicly or not 
+  const [loading, setLoading] = useState(false)
+  const [content, setContent] = useState('')
+
+  const { getToken } = useAuth();
+
+  const onSubmitHandler = async (e) => {
+
+    e.preventDefault();
+    try {
+      setLoading(true)
+
+      const prompt = `Generate an image of ${input} in the style ${selectedStyle} `
+      const { data } = await axios.post('/api/ai/generate-image', { prompt, publish }, { headers: { Authorization: `Bearer ${await getToken()} ` } })
+
+      if (data.success) {
+        setContent(data.content)
+      } else {
+        toast.error(data.message)
       }
-  
+
+    } catch (e) {
+      toast.error(e.message)
+    }
+    setLoading(false)
+  }
+
 
   return (
     <div className='h-full overflow-y-scroll p-6 flex items-start flex-wrap gap-4 text-slate-700 ' >
@@ -35,28 +61,32 @@ const GenerateImages = () => {
 
         <div className='mt-3 flex gap-3 flex-wrap sm:max-w-9/11 ' >
           {imageStyle.map((item, index) => (
-            <span onClick={()=>setSelectedStyle(item)}  className={`text-xs px-4 py-1 border rounded-full cursor-pointer 
+            <span onClick={() => setSelectedStyle(item)} className={`text-xs px-4 py-1 border rounded-full cursor-pointer 
               ${selectedStyle === item ? 'bg-purple-50 text-purple-700 ' :
                 'text-gray-500 border-gray-300 '} `}
               key={item} >{item}</span>
           ))}
         </div>
 
-          <div className='my-6 flex items-center gap-2' >
-            <label className='relative cursor-pointer' >
-              <input type="checkbox" onChange={(e)=> setPublish(e.target.checked)} checked={publish} className='sr-only peer' />
+        <div className='my-6 flex items-center gap-2' >
+          <label className='relative cursor-pointer' >
+            <input type="checkbox" onChange={(e) => setPublish(e.target.checked)} checked={publish} className='sr-only peer' />
 
-              <div className='w-9 h-5 bg-slate-300 rounded-full peer-checked:bg-green-500 transition ' ></div>
+            <div className='w-9 h-5 bg-slate-300 rounded-full peer-checked:bg-green-500 transition ' ></div>
 
-              <span className='absolute left-1 top-1 w-3 h-3 bg-white rounded-full transition peer-checked:translate-x-4 ' ></span>
+            <span className='absolute left-1 top-1 w-3 h-3 bg-white rounded-full transition peer-checked:translate-x-4 ' ></span>
 
-            </label>
-            <p className='text-sm' >Make this image Public</p>
-          </div>
+          </label>
+          <p className='text-sm' >Make this image Public</p>
+        </div>
 
-        <button className='w-full flex justify-center items-center gap-2 bg-gradient-to-r from-[#00ad25] to-[#04ff50] text-white px-4 py-2 mt-6 text-sm rounded-lg cursor-pointer ' >
-           <Image className='w-5' /> Generate Image
-           </button>
+        <button disabled={loading} className='w-full flex justify-center items-center gap-2 bg-gradient-to-r from-[#00ad25] to-[#04ff50] text-white px-4 py-2 mt-6 text-sm rounded-lg cursor-pointer ' >
+
+          {
+            loading ? <span className='rounded-full my-1 h-4 w-4 border-2 border-t-transparent animate-spin ' ></span> : <Image className='w-5' />
+          }
+          Generate Image
+        </button>
       </form>
 
       {/* Right col */}
@@ -67,12 +97,23 @@ const GenerateImages = () => {
           <h1 className='text-xl font-semibold ' >Generated Image</h1>
         </div>
 
-        <div className='flex-1 flex justify-center items-center ' >
+        {
+          !content ? (<div className='flex-1 flex justify-center items-center ' >
             <div className='text-sm flex flex-col items-center gap-5 text-gray-400 ' >
               <Image className='w-9 h-9' />
               <p>Enter a topic and click "Generate Image" to get started</p>
             </div>
-        </div>
+          </div>) : (
+
+            <div className=' mt-3 h-full ' >
+              <img src={content} alt="image" className='w-full h-full' />
+            </div>
+
+          )
+        }
+
+
+
       </div>
 
 
